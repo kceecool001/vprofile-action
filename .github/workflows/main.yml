@@ -69,7 +69,7 @@ jobs:
             SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    BUILD_AND_PUBLISH:
+   BUILD_AND_PUBLISH:
     needs: Testing
     runs-on: ubuntu-latest
     steps:
