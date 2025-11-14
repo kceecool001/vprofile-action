@@ -26,22 +26,38 @@ jobs:
             java-version: '11'
             distribution: 'temurin'
         
-        #set up sonar-scanner 
-        - name: Setup SonarQube
+        # Setup SonarCloud scanner
+        - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@v2
+          with:
+            projectBaseDir: .
+            args: >
+              -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+              -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+              -Dsonar.host.url=https://sonarcloud.io
+              -Dsonar.sources=src/
+              -Dsonar.junit.reportPaths=target/surefire-reports/
+              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+              -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+              -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
+
+        
+            #set up sonar-scanner 
+        #- name: Setup SonarQube
+        #  uses: SonarSource/sonarcloud-github-action@v2
 
         #Run sonar-scanner
-        - name: SonarQube Scan
-          run: sonar-scanner
-             - Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-             - Dsonar.login=${{ secrets.SONAR_TOKEN }}
-             - Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-             - Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-             - Dsonar.sources=src/
-             - Dsonar.junit.reportPath=target/surefire-reports/
-             - Dsonar.jacoco.reportPath=target/jacoco.exec
-             - Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
-             - Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
+        #- name: SonarQube Scan
+        #  run: sonar-scanner
+        #     - Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        #     - Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        #     - Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+        #     - Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+        #     - Dsonar.sources=src/
+        #     - Dsonar.junit.reportPath=target/surefire-reports/
+        #     - Dsonar.jacoco.reportPath=target/jacoco.exec
+        #     - Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+        #     - Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
 
         # check the quality gate status
         - name: SonarQube Quality Gate Check
